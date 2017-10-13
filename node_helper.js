@@ -22,7 +22,7 @@ module.exports = NodeHelper.create({
 			lines.shift();			
 		}
 		playList = playList.filter(function(track) {
-			return parseInt(track.Pos) > start && parseInt(track.Pos) <= end;
+			return parseInt(track.Pos) >= start && parseInt(track.Pos) < end;
 		});
 		return playList;
 	},
