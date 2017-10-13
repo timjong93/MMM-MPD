@@ -1,0 +1,11 @@
+{
+  "name": "mmm_mpd_client",
+  "version": "0.1.0",
+  "description": "Music Player Daemon for magic mirror",
+  "main": "none",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Tim Jongsma",
+  "license": "UNLICENSED"
+}
