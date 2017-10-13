@@ -1,9 +1,9 @@
 /* global Module */
 
 /* Magic Mirror
- * Module: HelloWorld
+ * Module: MMM-MPD
  *
- * By Michael Teeuw http://michaelteeuw.nl
+ * By Tim Jongsma
  * MIT Licensed.
  */
 
@@ -12,7 +12,6 @@ Module.register("mpd_client",{
 	// Default module config.
 	defaults: {
         maxRows: 10,
-        fade: true,
         fadePoint: 0.5,
         port: 6600,
         hostname: 'localhost',
