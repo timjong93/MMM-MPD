@@ -7,7 +7,7 @@
  * MIT Licensed.
  */
 
-Module.register("mpd_client",{
+Module.register("MMM-MPD",{
 
 	// Default module config.
 	defaults: {
@@ -28,7 +28,7 @@ Module.register("mpd_client",{
 
 	getStyles: function() {
 		console.log('getStyles');
-        return ['font-awesome.css','mpd_client.css'];
+        return ['font-awesome.css','MMM-MPD.css'];
     },
 
 	start: function() {
