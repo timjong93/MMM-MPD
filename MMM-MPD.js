@@ -11,8 +11,10 @@ Module.register("MMM-MPD",{
 
 	// Default module config.
 	defaults: {
-        maxRows: 10,
-        fadePoint: 0.5,
+		showPlaylist: true,
+		maxRows: 10,
+		fade: true,
+        fadePoint: 0.3,
         port: 6600,
         hostname: 'localhost',
     },
@@ -26,13 +28,25 @@ Module.register("MMM-MPD",{
 
 	playList : [],
 
+	// A loading boolean.
+	loading: true,
+	
 	getStyles: function() {
 		console.log('getStyles');
         return ['font-awesome.css','MMM-MPD.css'];
     },
 
+	// Subclass getTranslations method.
+    getTranslations: function() {
+        return {
+            en: "translations/en.json",
+            de: "translations/de.json"
+        };
+	},
+	
 	start: function() {
 		console.log("starting MPD Client");
+		this.addFilters();
 		this.sendSocketNotification("config", this.config)
 	},
 
@@ -44,68 +58,64 @@ Module.register("MMM-MPD",{
         	this.playerState.state = payload.state;
         	this.playerState.volume = payload.volume;
         	this.playerState.repeat = payload.repeat;
-        	this.playerState.random = payload.random
+			this.playerState.random = payload.random;
+			this.loading = false;
         	this.updateDom();
         }
         if (notification === 'mpd_playlist_update') {
         	this.playList = payload; 
-        	console.log(payload);
+			console.log(payload);
+			this.loading = false;
         	this.updateDom();
         }
 
     },
 
-	// Override dom generator.
-	getDom: function() {
-		var wrapper = document.createElement("div");
-		var playerStateDiv = document.createElement('div');
-		if(this.playerState.state === 'play'){
-			playerStateDiv.innerHTML = '<i class="fa fa-play" aria-hidden="true"></i>';
-		}else{
-			playerStateDiv.innerHTML = '<i class="fa fa-pause" aria-hidden="true"></i>';
+	getTemplate: function () {
+        return "templates\\mmm-mpd-playlist.njk";
+	},
+	
+    getTemplateData: function () {
+        var templateData = {
+            loading: this.loading,
+            config: this.config,
+            identifier: this.identifier,
+            timeStamp: this.dataRefreshTimeStamp
+		};
+
+		if (!this.loading) {
+			templateData.playerstate = this.playerState.state;
+			templateData.playervolume = this.playerState.volume;
+
+			if(this.playList.length > 0){
+				templateData.playlist = this.playList;
+			}
 		}
-		if(this.playList.length > 0){
-			let currentDiv = document.createElement('div');
-			currentDiv.innerHTML = this.playList[0].Title+'<br>'+this.playList[0].Artist+'<br>'+this.playList[0].Album;
-			currentDiv.classList.add('current', 'small');
-			playerStateDiv.appendChild(currentDiv);
+        return templateData;
+	},
+
+	addFilters() {
+        var env = this.nunjucksEnvironment();
+		env.addFilter("getFadeOpacity", this.getFadeOpacity.bind(this));
+		env.addFilter("getTrackTime", this.getTrackTime.bind(this));
+	},
+	
+	getFadeOpacity: function(index, itemCount) {
+		var fadeStart = itemCount * this.config.fadePoint;
+        var fadeItemCount = itemCount - fadeStart + 1;
+        if (this.config.fade && index > fadeStart) {
+            return 1- ((index - fadeStart) / fadeItemCount);
+        } else {
+            return 1;
 		}
-		wrapper.appendChild(playerStateDiv);
-
-		// <header class="module-header">Calendar</header>
-		let playListHeader = document.createElement("header");
-		playListHeader.className = "module-header";
-		playListHeader.innerHTML = 'playList'
-		wrapper.appendChild(playListHeader);
-
-		let tableWrapper = document.createElement("table");
-        tableWrapper.className = "small playList";
-        for (var i = 0; i < this.playList.length; i++) {
-        	let tr = document.createElement("tr");
-
-        	var startingPoint = 3;
-            var steps = this.playList.length - this.config.fadePoint;
-            if (i >= startingPoint) {
-                var currentStep = i - startingPoint;
-                tr.style.opacity = 1 - (1 / steps * currentStep);
-            }
-
-        	let tdSong = document.createElement("td");
-        	tdSong.innerHTML = this.playList[i].Title + " - " + this.playList[i].Artist;
-        	tdSong.className = "align-left bright";
-        	tr.appendChild(tdSong)
-        	let tdTime = document.createElement("td");
-        	let minutes = Math.floor(this.playList[i].Time / 60);
-        	var seconds = this.playList[i].Time - minutes * 60;
-        	if(seconds.toString().length < 2){
-        		seconds = '0' + seconds; 
-        	}
-        	tdTime.innerHTML = minutes + ":" + seconds;
-        	tdTime.className = "align-right light";
-        	tr.appendChild(tdTime)
-        	tableWrapper.appendChild(tr);
-        }
-        wrapper.appendChild(tableWrapper);
-		return wrapper;
+    },
+	
+	getTrackTime: function(trackTime) {
+		let minutes = Math.floor(trackTime / 60);
+		var seconds = trackTime - minutes * 60;
+		if(seconds.toString().length < 2){
+			seconds = '0' + seconds; 
+		}
+		return minutes + ":" + seconds;
 	}
 });

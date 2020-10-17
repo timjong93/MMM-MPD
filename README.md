@@ -7,7 +7,7 @@ and shows the current state of your music player on your magic mirror.
 
 ## Example
 
-![screenshot of MMM-MPD](https://user-images.githubusercontent.com/3584382/31564034-be25b64c-b061-11e7-93e6-2209d26000c9.PNG)
+![screenshot of MMM-MPD](https://user-images.githubusercontent.com/55058372/96333897-f782f800-106c-11eb-8b3a-f48a6d1e4387.JPG)
 
 ## Installation
 
@@ -68,8 +68,10 @@ The following properties can be configured:
 | ------ | -----------
 | `hostname` | The hostname of the machine running the MPD server. <br><br> **Example:** `'192.168.0.10'` <br> **Default value:** `'localhost'`
 | `port` | The port of the MPD server. <br><br> **Example:** `'6600` <br> **Default value:** `'6600'`
+| `showPlaylist` | Show playlist or not <br><br> **Example:** `'true` <br> **Default value:** `'true'`
 | `maxRows` | The number of songs comming up in your playlist which will be displayed. <br><br> **Example:** `'10` <br> **Default value:** `'10'`
-| `fadePoint` |the point where the playlist starts to fade <br><br> **Example:** `'0.5` <br> **Default value:** `'0.5'`
+| `fade` | Enable fading effect. <br><br> **Example:** `'true` <br> **Default value:** `'true'`
+| `fadePoint` | The point where the playlist starts to fade. <br><br> **Example:** `'0.3` <br> **Default value:** `'0.3'`
 
 ### Displaying the MMM-MPD module
 

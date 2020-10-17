@@ -64,7 +64,6 @@ module.exports = NodeHelper.create({
 			});
 
 			self.client.on('system', function(name) {
-				//console.log("update", name);
 				self.client.sendCommand(cmd("status", []), function(err, msg) {
 					if (err) throw err;
 

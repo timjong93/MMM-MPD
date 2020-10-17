@@ -1,20 +1,31 @@
-.current{
-	float: right;
-    padding-left: 40px;
+#mpd-container .float-left {
+    float: left;
+}
+
+#mpd-container .float-right {
+    float: right;
+}
+
+#mpd-container .current {
+    padding-left: 20px;
+    padding-bottom: 10px;
     width: 250px;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
-    padding-bottom: 20px;
 }
 
-.playList > tr > td {
+#mpd-container .playList tr td {
 	max-width: 250px;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
 }
 
-.playlist > tr > .time {
+#mpd-container .playList tr td.time {
  	padding-left: 20px;
+}
+
+#mpd-container .clearfix {
+    clear: both;
 }
