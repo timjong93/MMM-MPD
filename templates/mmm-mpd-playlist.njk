@@ -4,34 +4,38 @@
     </div>
 {% else %}
     {% if playlist %}
-        <div id="mpd-container">
-            <div class="xsmall dimmed light align-left">{{ "NOWPLAYING" | translate }}:</div>
-            <div class="clearfix">
-                <div class="float-left">
-                    {% if playerstate === 'play' %}
-                        <i class="fa fa-play" aria-hidden="true"></i>
-                    {% else %}
-                        <i class="fa fa-pause" aria-hidden="true"></i>
-                    {% endif %}
-                </div>
-                <div class="float-right current small bright align-left">
-                    <span>{{ playlist[0].Title }} - {{ playlist[0].Artist }}</span><br>
-                    <span class="xsmall dimmed">{{ "ALBUM" | translate }}: {{ playlist[0].Album }}</span>
-                </div>
-            </div>
-            <div class="xsmall dimmed light align-left">{{ "VOLUME" | translate }}: {{ playervolume }}</div>
-            {% if (config.showPlaylist) %}
+        <div class="nowplaying-wrapper">
+            <table>
+                <tr><td colspan="2" class="xsmall dimmed light align-left">{{ "NOWPLAYING" | translate }}:</td></tr>
+                <tr>
+                    <td class="play-btn align-left">
+                        {% if playerstate === 'play' %}
+                            <i class="fa fa-play" aria-hidden="true"></i>
+                        {% else %}
+                            <i class="fa fa-pause" aria-hidden="true"></i>
+                        {% endif %}
+                    </td>
+                    <td class="current-track small align-left">
+                        <span class="bright">{{ playlist[0].Title }} - {{ playlist[0].Artist }}</span><br>
+                        <span class="xsmall dimmed">{{ "ALBUM" | translate }}: {{ playlist[0].Album }}</span>
+                    </td>
+                </tr>
+                <tr><td colspan="2" class="xsmall dimmed light align-left">{{ "VOLUME" | translate }}: {{ playervolume }}</td></tr>
+            </table>
+        </div>
+        {% if (config.showPlaylist) %}
+            <div class="playlist-wrapper">
                 <header class="module-header">{{ "PLAYLIST" | translate }}</header>
-                <table class="small playList">
+                <table class="playlist">
                     {% for track in playlist %}
                         <tr style="opacity: {{ loop.index | getFadeOpacity(loop.length) }};">
-                            <td class="align-left small bright">{{ track.Title }} - {{ track.Artist }}</td>
-                            <td class="align-right small light time">{{ track.Time | getTrackTime }}</td>
+                            <td class="title align-left xsmall bright">{{ track.Title }} - {{ track.Artist }}</td>
+                            <td class="time align-right xsmall light">{{ track.Time | getTrackTime }}</td>
                         </tr>
                     {% endfor %}
                 </table>
-            {% endif %}
-        </div>
+            </div>
+        {% endif %}
     {% else %}
         <div class="small dimmed light">
             {{ "NO DATA" | translate | safe }}

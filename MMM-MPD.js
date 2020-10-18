@@ -27,8 +27,6 @@ Module.register("MMM-MPD",{
 	},
 
 	playList : [],
-
-	// A loading boolean.
 	loading: true,
 	
 	getStyles: function() {
@@ -36,7 +34,6 @@ Module.register("MMM-MPD",{
         return ['font-awesome.css','MMM-MPD.css'];
     },
 
-	// Subclass getTranslations method.
     getTranslations: function() {
         return {
             en: "translations/en.json",
@@ -52,9 +49,9 @@ Module.register("MMM-MPD",{
 
 	// Subclass socketNotificationReceived method.
     socketNotificationReceived: function(notification, payload) {
+		//console.log(payload);
         Log.info(this.name + " received a notification??: " + notification);
         if (notification === 'mpd_status_update') {
-        	console.log(payload);
         	this.playerState.state = payload.state;
         	this.playerState.volume = payload.volume;
         	this.playerState.repeat = payload.repeat;
@@ -63,8 +60,7 @@ Module.register("MMM-MPD",{
         	this.updateDom();
         }
         if (notification === 'mpd_playlist_update') {
-        	this.playList = payload; 
-			console.log(payload);
+        	this.playList = payload;
 			this.loading = false;
         	this.updateDom();
         }

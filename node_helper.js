@@ -1,5 +1,5 @@
 const NodeHelper = require("node_helper");
-var mpd = require('mpd'),
+var mpd = require("mpd"),
 cmd = mpd.cmd
 
 module.exports = NodeHelper.create({
@@ -45,7 +45,7 @@ module.exports = NodeHelper.create({
 
 			self.client.on('ready', function(err) {
 				if (err) throw err;
-				console.log('ready');
+				//console.log('ready');
 				self.client.sendCommand(cmd("status", []), function(err, msg) {
 					if (err) throw err;
 

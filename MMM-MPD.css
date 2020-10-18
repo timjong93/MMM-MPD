@@ -1,31 +1,16 @@
-#mpd-container .float-left {
-    float: left;
+.nowplaying-wrapper {
+    margin-bottom: 10px;
 }
-
-#mpd-container .float-right {
-    float: right;
+.nowplaying-wrapper .play-btn {
+    padding-right: 30px;
 }
-
-#mpd-container .current {
-    padding-left: 20px;
-    padding-bottom: 10px;
-    width: 250px;
+.nowplaying-wrapper .current-track,
+.playlist-wrapper .title {
+    max-width: 270px;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
 }
-
-#mpd-container .playList tr td {
-	max-width: 250px;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-}
-
-#mpd-container .playList tr td.time {
- 	padding-left: 20px;
-}
-
-#mpd-container .clearfix {
-    clear: both;
+.playlist-wrapper .time {
+    padding-left: 10px;
 }
