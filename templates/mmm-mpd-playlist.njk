@@ -26,7 +26,7 @@
         {% if (config.showPlaylist) %}
             <div class="playlist-wrapper">
                 <header class="module-header">{{ "PLAYLIST" | translate }}</header>
-                <table class="playlist">
+                <table>
                     {% for track in playlist %}
                         <tr style="opacity: {{ loop.index | getFadeOpacity(loop.length) }};">
                             <td class="title align-left xsmall bright">{{ track.Title }} - {{ track.Artist }}</td>
