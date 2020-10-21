@@ -7,7 +7,7 @@ and shows the current state of your music player on your magic mirror.
 
 ## Example
 
-![screenshot of MMM-MPD](https://user-images.githubusercontent.com/55058372/96333897-f782f800-106c-11eb-8b3a-f48a6d1e4387.JPG)
+![screenshot of MMM-MPD](https://user-images.githubusercontent.com/55058372/96780350-f34c3700-13ec-11eb-8c2d-536098016fef.jpg)
 
 ## Installation
 

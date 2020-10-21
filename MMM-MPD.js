@@ -24,8 +24,12 @@ Module.register("MMM-MPD",{
 		volume: 100,
 		repeat: false,
 		random: false,
+		duration: null,
+		started: null
 	},
 
+	playerTimer: null,
+	
 	playList : [],
 	loading: true,
 	
@@ -56,15 +60,21 @@ Module.register("MMM-MPD",{
         	this.playerState.volume = payload.volume;
         	this.playerState.repeat = payload.repeat;
 			this.playerState.random = payload.random;
+			
+			if (payload.elapsed) {
+				this.playerState.duration = payload.time.split(":");
+				this.playerState.started = Date.now() - (this.playerState.duration[0] * 1000);
+			}
 			this.loading = false;
-        	this.updateDom();
+
+			this.updatePlayerTimer();
+			this.updateDom();
         }
         if (notification === 'mpd_playlist_update') {
         	this.playList = payload;
 			this.loading = false;
         	this.updateDom();
         }
-
     },
 
 	getTemplate: function () {
@@ -83,6 +93,8 @@ Module.register("MMM-MPD",{
 			templateData.playerstate = this.playerState.state;
 			templateData.playervolume = this.playerState.volume;
 
+			templateData.playertime = this.playerState.playertime;
+
 			if(this.playList.length > 0){
 				templateData.playlist = this.playList;
 			}
@@ -93,7 +105,7 @@ Module.register("MMM-MPD",{
 	addFilters() {
         var env = this.nunjucksEnvironment();
 		env.addFilter("getFadeOpacity", this.getFadeOpacity.bind(this));
-		env.addFilter("getTrackTime", this.getTrackTime.bind(this));
+		env.addFilter("getDuration", this.getDuration.bind(this));
 	},
 	
 	getFadeOpacity: function(index, itemCount) {
@@ -106,12 +118,36 @@ Module.register("MMM-MPD",{
 		}
     },
 	
-	getTrackTime: function(trackTime) {
-		let minutes = Math.floor(trackTime / 60);
-		var seconds = trackTime - minutes * 60;
+	getDuration: function(seconds) {
+		var minutes = Math.floor(seconds / 60);
+		var seconds = Math.floor(seconds - minutes * 60);
 		if(seconds.toString().length < 2){
 			seconds = '0' + seconds; 
 		}
 		return minutes + ":" + seconds;
-	}
+	},
+
+	updatePlayer: function(){
+		var elapsed = (Date.now() - this.playerState.started) / 1000;
+		this.playerState.playertime = elapsed;
+		
+		this.updateDom();
+	},
+	
+	startPlayerTimer: function(){
+        if(this.playerTimer)return;
+        this.playerTimer = setInterval(this.updatePlayer.bind(this),500);
+    },
+	
+	stopPlayerTimer: function(){
+        clearInterval(this.playerTimer);
+        this.playerTimer = null;
+    },
+	
+	updatePlayerTimer: function(){
+        if(this.playerState.state == 'play')
+            this.startPlayerTimer();
+        else
+            this.stopPlayerTimer();
+    }
 });

@@ -6,7 +6,12 @@
     {% if playlist %}
         <div class="nowplaying-wrapper">
             <table>
-                <tr><td colspan="2" class="xsmall dimmed light align-left">{{ "NOWPLAYING" | translate }}:</td></tr>
+                <tr>
+                    <td colspan="2" class="xsmall dimmed light align-left">
+                        <span style="float:left;">{{ "NOWPLAYING" | translate }}:</span>
+                        <span style="float:right;">{{ "VOLUME" | translate }}: {{ playervolume }}</span>
+                    </td>
+                </tr>
                 <tr>
                     <td class="play-btn align-left">
                         {% if playerstate === 'play' %}
@@ -20,7 +25,12 @@
                         <span class="xsmall dimmed">{{ "ALBUM" | translate }}: {{ playlist[0].Album }}</span>
                     </td>
                 </tr>
-                <tr><td colspan="2" class="xsmall dimmed light align-left">{{ "VOLUME" | translate }}: {{ playervolume }}</td></tr>
+                <tr>
+                    <td colspan="2" class="xsmall dimmed light align-left">
+                        <i class="fa fa-clock-o" aria-hidden="true"></i> {{ playertime | getDuration }} / {{ playlist[0].Time | getDuration }}<br />
+                        <progress class="player" value="{{ playertime }}" max="{{ playlist[0].Time }}" />
+                    </td>
+                </tr>
             </table>
         </div>
         {% if (config.showPlaylist) %}
@@ -30,7 +40,7 @@
                     {% for track in playlist %}
                         <tr style="opacity: {{ loop.index | getFadeOpacity(loop.length) }};">
                             <td class="title align-left xsmall bright">{{ track.Title }} - {{ track.Artist }}</td>
-                            <td class="time align-right xsmall light">{{ track.Time | getTrackTime }}</td>
+                            <td class="time align-right xsmall light">{{ track.Time | getDuration }}</td>
                         </tr>
                     {% endfor %}
                 </table>
